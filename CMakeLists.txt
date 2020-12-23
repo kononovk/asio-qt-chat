@@ -26,6 +26,7 @@ add_executable(qt
         mainwindow.h
         mainwindow.cpp
         message_sent.h
+        message_sent.cpp
         ui_mainwindow.h
         mainwindow.ui)
 

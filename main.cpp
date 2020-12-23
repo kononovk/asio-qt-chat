@@ -1,29 +1,20 @@
-#include "message_sent.h"
+#include "mainwindow.h"
 
 #include <QApplication>
-#include <QVBoxLayout>
+#include <QScrollArea>
 
 int main(int argc, char *argv[]) {
     QApplication app(argc, argv);
 
-    auto* messageLayout = new QBoxLayout(QBoxLayout::TopToBottom);
+    auto* area = new QScrollArea;
+    area->resize(800, 800);
+    area->setMinimumHeight(500);
+    area->setMinimumWidth(500);
+    area->setWidgetResizable(true);
 
-    auto* message = new Message(messageLayout);
-    message->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-
-    auto* hLayout = new QHBoxLayout();
-    message->addToLayout(hLayout);
-
-    auto* layout = new QVBoxLayout();
-    layout->setSpacing(10);
-    layout->addLayout(messageLayout, 1);
-    layout->addWidget(message, 0, Qt::AlignBottom);
-    layout->addLayout(hLayout, 1);
-
-    auto* window = new QWidget();
-    window->resize(800, 230);
-    window->setLayout(layout);
-    window->show();
+    auto* window = new MainWindow(area);
+    area->setWidget(window);
+    area->show();
 
     return QApplication::exec();
 }

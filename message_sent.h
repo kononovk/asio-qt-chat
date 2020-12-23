@@ -6,40 +6,46 @@
 #include <QTextEdit>
 #include <QPushButton>
 #include <QHBoxLayout>
+#include <QShortcut>
+#include <QScrollArea>
 
 class Message : public QWidget {
 public:
-    explicit Message(QBoxLayout* mL, QWidget* parent = nullptr) : QWidget(parent), textEdit(new QTextEdit(this)),
-            sendButton(new QPushButton("send", this)), mL(mL) {
-        textEdit->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-        textEdit->setFixedHeight(2 * sendButton->height());
-        QObject::connect(sendButton, SIGNAL(clicked()), this, SLOT(Send()));
-    }
+    explicit Message(QScrollArea* scrollArea, QWidget* parent = nullptr);
 
-    void addToLayout(QHBoxLayout* layout) {
-        if (layout == nullptr) {
-            return;
-        }
-        layout->setSpacing(1);
-        layout->addWidget(textEdit, 1);
-        layout->addWidget(sendButton, 0);
-    }
+    void AddToLayout(QHBoxLayout* layout);
+    void SetShortcutOnSending(const QString& shortcut);
+
+    ~Message() = default;
 
 public slots:
-    void Send() {
-        auto* prevMessage = new QTextEdit(textEdit->toPlainText());
-        prevMessage->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-        prevMessage->setFixedHeight(2 * sendButton->height());
-
-        mL->addWidget(prevMessage, 1, Qt::AlignRight | Qt::AlignBottom);
-        mL->insertStretch(0, 100);
-        textEdit->clear();
-    }
+    void SendMessage();
 
 private:
-    QTextEdit* textEdit = nullptr;
-    QPushButton* sendButton = nullptr;
-    QBoxLayout* mL = nullptr;
+    QTextEdit* textEdit_ = nullptr;
+    QPushButton* sendButton_ = nullptr;
+    QBoxLayout* layoutSentMessages_ = nullptr;
+    QMap<QString, QShortcut*> keyboards;
+    QScrollArea* scrollArea_ = nullptr;
+    QString styleShitTextBox_ = " background-color: #8ead9e; "
+                                "border-style: outset; "
+                                "border-width: 4px; "
+                                "border-radius: 20px; "
+                                "border-color: #8e90b6; "
+                                "font: bold 14px; "
+                                "color: black; "
+                                "padding: 6px; ";
+    QString styleShitButton_ = " background-color: #8ead9e; "
+                               "border-style: outset; "
+                               "border-width: 2px; "
+                               "border-radius: 10px; "
+                               "border-color: #8e90b6; "
+                               "font: bold 13px; "
+                               "color: black; "
+                               "min-width: 4em; "
+                               "padding: 6px; ";
+    bool TextEditIsEmpty() const;
+
     Q_OBJECT
 };
 

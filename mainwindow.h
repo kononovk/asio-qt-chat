@@ -2,6 +2,8 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QLayout>
+#include <QScrollArea>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -9,13 +11,12 @@ QT_END_NAMESPACE
 
 class MainWindow : public QMainWindow
 {
-Q_OBJECT
-
 public:
-    MainWindow(QWidget *parent = nullptr);
+    MainWindow(QScrollArea* scrollArea, QWidget *parent = nullptr);
     ~MainWindow();
 
 private:
-    Ui::MainWindow *ui;
+    Ui::MainWindow* ui;
+    Q_OBJECT
 };
 #endif // MAINWINDOW_H
